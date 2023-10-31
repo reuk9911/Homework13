@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Skillbox_Homework12
 {
-    public class DepositBill : Bill, IDeposit<DepositBill>
+    public class DepositBill : Bill/*, IDeposit<DepositBill>*/
     {
 
         #region Поля и свойства
@@ -20,17 +20,17 @@ namespace Skillbox_Homework12
         /// <summary>
         /// Конструктор без параметров
         /// </summary>
-        public DepositBill() : base()
+        public DepositBill(Client Owner) : base(Owner)
         {
             this.BillType = "Депозитный счет";
         }
         #endregion
 
 
-        public DepositBill? Deposit(int BillId, decimal Sum)
-        {
-            this.Balance += Sum;
-            return this;
-        }
+        //public DepositBill? Deposit(int BillId, decimal Sum)
+        //{
+        //    this.Balance += Sum;
+        //    return this;
+        //}
     }
 }

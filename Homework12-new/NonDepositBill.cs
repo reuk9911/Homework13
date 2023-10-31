@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace Skillbox_Homework12
 {
-    public class NonDepositBill : DepositBill, IDeposit<NonDepositBill>
+    public class NonDepositBill : DepositBill/*, IDeposit<NonDepositBill>*/
     {
         public override string BillType { get; }
 
-        public NonDepositBill() : base()
+        public NonDepositBill(Client Owner) : base(Owner)
         {
             this.BillType = "Не депозитный счет";
         }
-        public new NonDepositBill? Deposit(int BillId, decimal Sum)
-        {
-            this.Balance += Sum;
-            return this;
-        }
+        //public new NonDepositBill? Deposit(int BillId, decimal Sum)
+        //{
+        //    this.Balance += Sum;
+        //    return this;
+        //}
     }
 }

@@ -4,17 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using System.Windows.Documents;
+using System.Windows.Media.TextFormatting;
 
 namespace Skillbox_Homework12
 {
-    public class Client: IDisposable, IDeposit<Bill>, ITransfer<Bill>
+    
+    
+
+    public class Client : IDisposable, IDeposit<Bill>, ITransfer<Bill>
     {
         #region Поля и Свойства
         /// <summary>
         /// Id клиента
         /// </summary>
         public int Id { get; private set; }
-        
+
         /// <summary>
         /// Коллекция счетов клиента
         /// </summary>
@@ -24,7 +29,7 @@ namespace Skillbox_Homework12
         /// Сообщения из методов для подписчиков
         /// </summary>
         public string Message { get; protected set; }
-        
+
         /// <summary>
         /// Имя Клиента
         /// </summary>
@@ -77,25 +82,39 @@ namespace Skillbox_Homework12
 
         #region Методы
 
+        public delegate void OpenCloseDelegate(object Sender, BillOpenCloseEventArgs Args);
+        public event OpenCloseDelegate OpenCloseBillEvent;
+
+        public delegate void BillDepositDelegate(object Sender, BillDepositEventArgs Args);
+        public event BillDepositDelegate BillDepositEvent;
+
+        public delegate void RefillByTransferDelegate(object Sender, BillTransferEventArgs Args);
+        public event RefillByTransferDelegate RefillByTransferEvent;
+
         /// <summary>
         /// Открывает новый счет заданного типа
         /// </summary>
         /// <param name="bType">Тип счета</param>
         public void OpenBill(EBillType bType)
         {
-            switch (bType)
-            {
-                case EBillType.DepositBill: Bills.Add(new DepositBill() as Bill); break;
-                case EBillType.NonDepositBill: Bills.Add(new NonDepositBill() as Bill); break;
-                default: break;
-            }
+            if (bType == EBillType.DepositBill)
+                Bills.Add(new DepositBill(this) as Bill);
+            else
+            if (bType == EBillType.NonDepositBill)
+                Bills.Add(new NonDepositBill(this) as Bill);
+            else return;
+
+            OpenCloseBillEvent?.Invoke(this, 
+                new BillOpenCloseEventArgs(OperationTypeEnum.Open, DateTime.Now, Bills[Bills.Count-1].Id));
+            Bills[Bills.Count - 1].RefillByTransferEvent += (Object Sender, BillTransferEventArgs Args) =>
+                RefillByTransferEvent?.Invoke(Sender, Args);
         }
 
         /// <summary>
         /// Закрывает счет
         /// </summary>
         /// <param name="BillId">Id счета</param>
-        /// <returns></returns>
+        /// <returns>true, если счет закрылся, иначе false</returns>
         public bool CloseBill(int BillId)
         {
             int index = FindBillIndex(BillId);
@@ -111,6 +130,9 @@ namespace Skillbox_Homework12
             }
             else
             {
+                OpenCloseBillEvent?.Invoke(this,
+                    new BillOpenCloseEventArgs(OperationTypeEnum.Close, DateTime.Now, Bills[Bills.Count - 1].Id));
+                //Bills[index].OnRefillByTransfer -= (Client Sender, decimal Sum)
                 Bills[index].Dispose();
                 Bills.RemoveAt(index);
                 Message = "Счет удален";
@@ -141,7 +163,9 @@ namespace Skillbox_Homework12
             if (k == -1) return null;
             else
             {
-                Bills[k].Balance += Sum;
+                Bills[k].Deposit(Sum);
+                BillDepositEvent?.Invoke(this, new BillDepositEventArgs(Bills[k].Id, DateTime.Now, Sum));
+                //BillAction?.Invoke(this, DateTime.Now, $"Пополнение счета Id = {Bills[Bills.Count - 1].Id} на {Sum}");
                 if (Bills[k] is DepositBill) return (DepositBill)Bills[k];
                 return Bills[k];
             }
@@ -162,8 +186,11 @@ namespace Skillbox_Homework12
                 this.Message = "Перевод не прошел! Не достаточно средств!";
                 return false;
             }
-            BillFrom.Balance -= sum;
-            BillTo.Balance += sum;
+            BillFrom.Transfer(sum);
+            //BillAction?.Invoke(this, DateTime.Now, 
+                //$"Перевод со счета Id = {BillFrom.Id} на счет {BillTo.Id} {sum}");
+
+            BillTo.RefillByTransfer(this, sum);
             this.Message = "Перевод прошел успешно!";
             return true;
         }

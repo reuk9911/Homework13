@@ -17,20 +17,25 @@ namespace Skillbox_Homework12
     {
         #region Свойства
         public ObservableCollection<T>? ClientList { get; private set; }
+
+        public ActionLog Log { get; private set; }
         #endregion
 
         #region Конструкторы
         public ClientRepository()
         {
             this.ClientList = new ObservableCollection<T>();
+            Log = new ActionLog();
         }
         #endregion
 
         #region Методы
         /// <summary>
-        /// Сериализация
+        /// Сериализация Клиентов и Лога
         /// </summary>
-        public void SerializeJson()
+        /// <param name="ClientsFile">Файл с клиентами</param>
+        /// <param name="LogFile">Файла с логами</param>
+        public void SerializeJson(string ClientsFile, string LogFile)
         {
 
             JsonSerializerSettings serializeSettings = new JsonSerializerSettings
@@ -38,30 +43,36 @@ namespace Skillbox_Homework12
                 TypeNameHandling = TypeNameHandling.All
             };
             string json = JsonConvert.SerializeObject(ClientList, Formatting.Indented, serializeSettings);
-            //string json = JsonConvert.SerializeObject(this);
-            File.WriteAllText("Serialization.txt", json);
+            File.WriteAllText("Clients.txt", json);
+
+            Log.SerializeJson(LogFile);
+
         }
 
 
         /// <summary>
-        /// Десериализация
+        /// Десериализация Клиентов и Лога
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="ClientsFile">Файл с клиентами</param>
+        /// <param name="LogFile">Файла с логами</param>
         /// <returns>Возвращает результат выполнения десериализации - true или  false</returns>
-        public bool DeserializeJson(string path)
+        public bool DeserializeJson(string ClientsFile, string LogFile)
         {
-            if (!File.Exists(path))
+            if (!File.Exists(ClientsFile) || (!File.Exists(LogFile)))
             {
                 return false;
             }
-            string json = File.ReadAllText(path);
+            string json = File.ReadAllText(ClientsFile);
 
             JsonSerializerSettings serializerSettings = new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.All
             };
+
             ClientList = JsonConvert.DeserializeObject<ObservableCollection<T>>(json, serializerSettings);
-            return true; 
+
+            Log.DeserializeJson(LogFile);
+            return true;
         }
 
 
@@ -73,6 +84,7 @@ namespace Skillbox_Homework12
         public Bill? FindBillById(int id)
         {
             Bill? bill = null;
+
             foreach (Client c in ClientList)
             {
                 foreach (Bill b in c.Bills)
@@ -95,6 +107,9 @@ namespace Skillbox_Homework12
         public void AddClient(T t) 
         {
             ClientList.Add(t);
+            ClientList[ClientList.Count - 1].OpenCloseBillEvent += Log.OnOpenCloseBill;
+            ClientList[ClientList.Count - 1].BillDepositEvent += Log.OnBillDeposit;
+            ClientList[ClientList.Count - 1].RefillByTransferEvent += Log.OnTransfer;
         }
 
         /// <summary>
@@ -126,6 +141,12 @@ namespace Skillbox_Homework12
 
                 default: break;
             }
+            ClientList[ClientList.Count - 1].OpenCloseBillEvent += Log.OnOpenCloseBill;
+            ClientList[ClientList.Count - 1].BillDepositEvent += Log.OnBillDeposit;
+            ClientList[ClientList.Count - 1].RefillByTransferEvent += Log.OnTransfer;
+
+
+
         }
 
         public IEnumerator<T> GetEnumerator()

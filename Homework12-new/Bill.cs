@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -11,7 +12,6 @@ namespace Skillbox_Homework12
     public class Bill : IDisposable, INotifyPropertyChanged
     {
         #region Поля и Свойства
-        
 
         /// <summary>
         /// Id клиента
@@ -21,7 +21,7 @@ namespace Skillbox_Homework12
         /// <summary>
         /// Баланс счета
         /// </summary>
-        public decimal Balance 
+        public decimal Balance/* { get; private set; }*/
         {
             get => this.balance;
             set
@@ -47,7 +47,7 @@ namespace Skillbox_Homework12
         /// <summary>
         /// Баланс счета
         /// </summary>
-        private decimal balance; 
+        private decimal balance;
 
         #endregion
 
@@ -60,21 +60,63 @@ namespace Skillbox_Homework12
         {
             IdGen = new IdGenerator("Bill");
         }
-        
-        
+
+
         /// <summary>
         /// Конструктор без параметров
         /// </summary>
-        public Bill()
+        public Bill(Client Owner)
         {
             this.BillType = "Bill";
-            this.Balance = 0.0m;
+            this.balance = 0.0m;
             this.Id = IdGen.GetNewId();
         }
         #endregion
 
         #region Методы
 
+        public delegate void RefillByTransferDelegate(Object Sender, BillTransferEventArgs Args);
+        public event RefillByTransferDelegate RefillByTransferEvent;
+
+
+        /// <summary>
+        /// пополнение владельцем
+        /// </summary>
+        /// <param name="sum">Сумма</param>
+        public void Deposit(decimal sum)
+        {
+            if (sum > 0.0m)
+            {
+                Balance += sum;
+            }
+        }
+
+        /// <summary>
+        /// Перевод на другой счет 
+        /// </summary>
+        /// <param name="sum"></param>
+        public void Transfer(decimal sum)
+        {
+            if (sum > 0.0m)
+            {
+                Balance -= sum;
+            }
+        }
+
+        /// <summary>
+        /// Переводит средства от другого клиента
+        /// </summary>
+        /// <param name="FromClient">Клиент отправитель</param>
+        /// <param name="sum">Сумма</param>
+        public void RefillByTransfer(Client FromClient, decimal sum)
+        {
+            if (sum > 0.0m)
+            {
+                Balance += sum;
+                RefillByTransferEvent?.Invoke(FromClient, new BillTransferEventArgs(DateTime.Now, sum));
+            }
+            
+        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")
