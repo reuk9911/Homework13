@@ -65,7 +65,7 @@ namespace Skillbox_Homework12
         /// <summary>
         /// Конструктор без параметров
         /// </summary>
-        public Bill(Client Owner)
+        public Bill()
         {
             this.BillType = "Bill";
             this.balance = 0.0m;

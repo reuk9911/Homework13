@@ -72,6 +72,20 @@ namespace Skillbox_Homework12
             ClientList = JsonConvert.DeserializeObject<ObservableCollection<T>>(json, serializerSettings);
 
             Log.DeserializeJson(LogFile);
+
+            
+            for (int i=0; i<ClientList.Count; i++)
+            {
+                // восстанавливаем подписки лога
+                ClientList[i].OpenCloseBillEvent += Log.OnOpenCloseBill;
+                ClientList[i].BillDepositEvent += Log.OnBillDeposit;
+                ClientList[i].RefillByTransferEvent += Log.OnTransfer;
+                for (int j=0; j < ClientList[i].Bills.Count; j++)
+                {
+                    ClientList[i].Bills[j].RefillByTransferEvent += ClientList[i].OnRefillBillByTransfer;
+                }
+            }
+
             return true;
         }
 

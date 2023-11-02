@@ -39,12 +39,13 @@ namespace Homework12_new
 
         public void OnBillDeposit(Object Sender, BillDepositEventArgs Args)
         {
-            Logs.Add("Клиент " + ((Client)Sender).Name + " пополнил счет id = " + Args.BillId + "на " + Args.Sum);
+            Logs.Add(Args.Dt.ToShortTimeString() + " " + 
+                "Клиент " + ((Client)Sender).Name + " пополнил счет " + Args.BillId + " на " + Args.Sum);
         }
 
         public void OnTransfer(Object Sender, BillTransferEventArgs Args)
         {
-            Logs.Add("Клиент " + ((Client)Sender).Name + " перевел " + Args.Sum);
+            Logs.Add(Args.Dt.ToShortTimeString() + " " + "Клиент " + ((Client)Sender).Name + " перевел " + Args.Sum);
         }
 
         public bool DeserializeJson(string LogPath)
@@ -78,7 +79,6 @@ namespace Homework12_new
 
         #endregion
 
-        #region Обработчики событий
-        #endregion
+
     }
 }

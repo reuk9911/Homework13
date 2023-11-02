@@ -11,7 +11,6 @@ namespace Skillbox_Homework12
 {
     
     
-
     public class Client : IDisposable, IDeposit<Bill>, ITransfer<Bill>
     {
         #region Поля и Свойства
@@ -91,6 +90,11 @@ namespace Skillbox_Homework12
         public delegate void RefillByTransferDelegate(object Sender, BillTransferEventArgs Args);
         public event RefillByTransferDelegate RefillByTransferEvent;
 
+        public void OnRefillBillByTransfer(Object Sender, BillTransferEventArgs Args)
+        {
+            RefillByTransferEvent?.Invoke(Sender, Args);
+        }
+
         /// <summary>
         /// Открывает новый счет заданного типа
         /// </summary>
@@ -98,16 +102,17 @@ namespace Skillbox_Homework12
         public void OpenBill(EBillType bType)
         {
             if (bType == EBillType.DepositBill)
-                Bills.Add(new DepositBill(this) as Bill);
+                Bills.Add(new DepositBill() as Bill);
             else
             if (bType == EBillType.NonDepositBill)
-                Bills.Add(new NonDepositBill(this) as Bill);
+                Bills.Add(new NonDepositBill() as Bill);
             else return;
 
             OpenCloseBillEvent?.Invoke(this, 
                 new BillOpenCloseEventArgs(OperationTypeEnum.Open, DateTime.Now, Bills[Bills.Count-1].Id));
-            Bills[Bills.Count - 1].RefillByTransferEvent += (Object Sender, BillTransferEventArgs Args) =>
-                RefillByTransferEvent?.Invoke(Sender, Args);
+            Bills[Bills.Count - 1].RefillByTransferEvent += OnRefillBillByTransfer;
+                //(Object Sender, BillTransferEventArgs Args) =>
+                //RefillByTransferEvent?.Invoke(Sender, Args);
         }
 
         /// <summary>

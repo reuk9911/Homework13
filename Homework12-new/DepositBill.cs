@@ -20,7 +20,7 @@ namespace Skillbox_Homework12
         /// <summary>
         /// Конструктор без параметров
         /// </summary>
-        public DepositBill(Client Owner) : base(Owner)
+        public DepositBill() : base()
         {
             this.BillType = "Депозитный счет";
         }
