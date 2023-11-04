@@ -101,7 +101,7 @@ namespace Skillbox_Homework12
         #region Методы
         public void OnRefillBillByTransfer(Object Sender, RefillByTransferEventArgs Args)
         {
-            RefillByTransferEvent?.Invoke(Sender, Args);
+            RefillByTransferEvent?.Invoke(this, Args);
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace Skillbox_Homework12
             {
                 OpenCloseBillEvent?.Invoke(this,
                     new BillOpenCloseEventArgs(OperationTypeEnum.Close, DateTime.Now, Bills[Bills.Count - 1].Id));
-                //Bills[index].OnRefillByTransfer -= (Client Sender, decimal Sum)
+                Bills[index].RefillByTransferEvent -= OnRefillBillByTransfer;
                 Bills[index].Dispose();
                 Bills.RemoveAt(index);
                 Message = "Счет удален";
@@ -202,6 +202,7 @@ namespace Skillbox_Homework12
             TransferEvent?.Invoke(this, new TransferEventArgs(DateTime.Now, Id, Name, BillFrom.Id, BillTo.Id, sum));
 
             BillTo.RefillByTransfer(this, sum);
+
             this.Message = "Перевод прошел успешно!";
             return true;
         }

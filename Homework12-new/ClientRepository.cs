@@ -159,6 +159,8 @@ namespace Skillbox_Homework12
             ClientList[ClientList.Count - 1].OpenCloseBillEvent += Log.OnOpenCloseBill;
             ClientList[ClientList.Count - 1].BillDepositEvent += Log.OnBillDeposit;
             ClientList[ClientList.Count - 1].TransferEvent += Log.OnTransfer;
+            ClientList[ClientList.Count - 1].RefillByTransferEvent += Log.OnRefillByTransfer;
+
 
 
 

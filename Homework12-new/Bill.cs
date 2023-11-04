@@ -121,7 +121,8 @@ namespace Skillbox_Homework12
             if (sum > 0.0m)
             {
                 Balance += sum;
-                RefillByTransferEvent?.Invoke(FromClient, new RefillByTransferEventArgs(DateTime.Now, sum));
+                RefillByTransferEvent?.Invoke(this, 
+                    new RefillByTransferEventArgs(DateTime.Now, FromClient.Name, FromClient.Id, this.Id, sum));
             }
             
         }

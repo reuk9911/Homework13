@@ -31,9 +31,9 @@ namespace Homework12_new
         public void OnOpenCloseBill(Object Sender, BillOpenCloseEventArgs Args)
         {
             if (Args.Type == OperationTypeEnum.Open)
-                Logs.Add($"{Args.Dt.ToShortTimeString()} {((Client)Sender).Name} открыл счет {Args.BillId}");
+                Logs.Add($"{Args.Dt.ToShortTimeString()} Клиент {((Client)Sender).Name} открыл счет {Args.BillId}");
             else
-                Logs.Add($"{Args.Dt.ToShortTimeString()} {((Client)Sender).Name} закрыл счет {Args.BillId}");
+                Logs.Add($"{Args.Dt.ToShortTimeString()} Клиент {((Client)Sender).Name} закрыл счет {Args.BillId}");
 
         }
 
@@ -49,11 +49,11 @@ namespace Homework12_new
                 $"перевел {Args.Sum} на счет {Args.BillIdTo}");
         }
 
-        //public void OnRefillByTransfer(object Sender, BillTransferEventArgs Args)
-        //{
-        //    Logs.Add(Args.Dt.ToShortTimeString() + " Поступление " + Args.Sum + " на счет " + Args.BillIdFrom + 
-        //        " от клиента " + ((Client)Sender).Name);
-        //}
+        public void OnRefillByTransfer(object Sender, RefillByTransferEventArgs Args)
+        {
+            Logs.Add($"{Args.Dt.ToShortTimeString()} Поступление {Args.Sum} на счет {Args.RecieverBillId} " +
+                $" от клиента { Args.SenderName }");
+        }
 
         public bool DeserializeJson(string LogPath)
         {
