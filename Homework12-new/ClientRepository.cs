@@ -76,10 +76,11 @@ namespace Skillbox_Homework12
             
             for (int i=0; i<ClientList.Count; i++)
             {
-                // восстанавливаем подписки лога
+                // восстанавливаем подписки 
                 ClientList[i].OpenCloseBillEvent += Log.OnOpenCloseBill;
                 ClientList[i].BillDepositEvent += Log.OnBillDeposit;
-                ClientList[i].RefillByTransferEvent += Log.OnTransfer;
+                ClientList[i].TransferEvent += Log.OnTransfer;
+
                 for (int j=0; j < ClientList[i].Bills.Count; j++)
                 {
                     ClientList[i].Bills[j].RefillByTransferEvent += ClientList[i].OnRefillBillByTransfer;
@@ -123,7 +124,7 @@ namespace Skillbox_Homework12
             ClientList.Add(t);
             ClientList[ClientList.Count - 1].OpenCloseBillEvent += Log.OnOpenCloseBill;
             ClientList[ClientList.Count - 1].BillDepositEvent += Log.OnBillDeposit;
-            ClientList[ClientList.Count - 1].RefillByTransferEvent += Log.OnTransfer;
+            ClientList[ClientList.Count - 1].TransferEvent += Log.OnTransfer;
         }
 
         /// <summary>
@@ -157,7 +158,7 @@ namespace Skillbox_Homework12
             }
             ClientList[ClientList.Count - 1].OpenCloseBillEvent += Log.OnOpenCloseBill;
             ClientList[ClientList.Count - 1].BillDepositEvent += Log.OnBillDeposit;
-            ClientList[ClientList.Count - 1].RefillByTransferEvent += Log.OnTransfer;
+            ClientList[ClientList.Count - 1].TransferEvent += Log.OnTransfer;
 
 
 

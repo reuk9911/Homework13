@@ -73,12 +73,20 @@ namespace Skillbox_Homework12
         }
         #endregion
 
-        #region Методы
+        #region События
 
-        public delegate void RefillByTransferDelegate(Object Sender, BillTransferEventArgs Args);
+        public delegate void RefillByTransferDelegate(Object Sender, RefillByTransferEventArgs Args);
+
+        /// <summary>
+        /// Происходит, когда на счет переводят деньги
+        /// </summary>
         public event RefillByTransferDelegate RefillByTransferEvent;
+        
+        #endregion
 
 
+        #region Методы
+        
         /// <summary>
         /// пополнение владельцем
         /// </summary>
@@ -113,7 +121,7 @@ namespace Skillbox_Homework12
             if (sum > 0.0m)
             {
                 Balance += sum;
-                RefillByTransferEvent?.Invoke(FromClient, new BillTransferEventArgs(DateTime.Now, sum));
+                RefillByTransferEvent?.Invoke(FromClient, new RefillByTransferEventArgs(DateTime.Now, sum));
             }
             
         }

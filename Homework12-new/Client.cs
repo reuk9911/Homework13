@@ -68,29 +68,38 @@ namespace Skillbox_Homework12
 
         }
 
-        //public Client(int id)
-        //{
-        //    this.ClientType = "Физическое лицо";
-        //    this.Message = "";
-        //    this.Bills = new ObservableCollection<Bill>();
-        //    Id = id;
-        //    IdGen.UsedIds.Add(id);
-        //    this.Name = "";
-        //}
         #endregion
 
-        #region Методы
+        #region События
 
         public delegate void OpenCloseDelegate(object Sender, BillOpenCloseEventArgs Args);
+        
+        /// <summary>
+        /// Происходит, когда клиент открывает и закрывает счет
+        /// </summary>
         public event OpenCloseDelegate OpenCloseBillEvent;
 
         public delegate void BillDepositDelegate(object Sender, BillDepositEventArgs Args);
+        
+        /// <summary>
+        /// Происходит при пополнении счета клиентом
+        /// </summary>
         public event BillDepositDelegate BillDepositEvent;
 
-        public delegate void RefillByTransferDelegate(object Sender, BillTransferEventArgs Args);
+        public delegate void RefillByTransferDelegate(object Sender, RefillByTransferEventArgs Args);
+        
+        /// <summary>
+        /// Происходит, когда на счет переводят деньги
+        /// </summary>
         public event RefillByTransferDelegate RefillByTransferEvent;
 
-        public void OnRefillBillByTransfer(Object Sender, BillTransferEventArgs Args)
+        public delegate void TransferDelegate(object Sender, TransferEventArgs Args);
+        public event TransferDelegate TransferEvent;
+
+        #endregion
+
+        #region Методы
+        public void OnRefillBillByTransfer(Object Sender, RefillByTransferEventArgs Args)
         {
             RefillByTransferEvent?.Invoke(Sender, Args);
         }
@@ -111,8 +120,6 @@ namespace Skillbox_Homework12
             OpenCloseBillEvent?.Invoke(this, 
                 new BillOpenCloseEventArgs(OperationTypeEnum.Open, DateTime.Now, Bills[Bills.Count-1].Id));
             Bills[Bills.Count - 1].RefillByTransferEvent += OnRefillBillByTransfer;
-                //(Object Sender, BillTransferEventArgs Args) =>
-                //RefillByTransferEvent?.Invoke(Sender, Args);
         }
 
         /// <summary>
@@ -192,8 +199,7 @@ namespace Skillbox_Homework12
                 return false;
             }
             BillFrom.Transfer(sum);
-            //BillAction?.Invoke(this, DateTime.Now, 
-                //$"Перевод со счета Id = {BillFrom.Id} на счет {BillTo.Id} {sum}");
+            TransferEvent?.Invoke(this, new TransferEventArgs(DateTime.Now, Id, Name, BillFrom.Id, BillTo.Id, sum));
 
             BillTo.RefillByTransfer(this, sum);
             this.Message = "Перевод прошел успешно!";
