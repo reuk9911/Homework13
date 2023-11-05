@@ -8,10 +8,12 @@
         Title="MainWindow" Height="600" Width="1000" Closing="Window_Closing" WindowState="Maximized">
     <Grid Margin="0,0,0,0">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="220"/>
-            <ColumnDefinition Width="220"/>
-            <ColumnDefinition Width="180"/>
-            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="4*"/>
+            
+            
         </Grid.ColumnDefinitions>
 
         <ScrollViewer
@@ -199,7 +201,7 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Border>
-        
+
         <!--BillsViewGrid-->
         <Border
             Margin="3,3,3,3" 
@@ -220,15 +222,15 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Border>
-        <ListView 
+        <ListBox
             Grid.Column="3"
-            d:ItemsSource="{d:SampleData ItemCount=5}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+            x:Name ="LogList">
+            <!--<ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding ElementName=Logs}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>-->
+        </ListBox>
 
     </Grid>
 </Window>

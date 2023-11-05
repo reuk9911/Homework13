@@ -33,6 +33,7 @@ namespace Homework12_new
 
 
             ClientsViewGrid.ItemsSource = Clients.ClientList;
+            LogList.ItemsSource = Clients.Log.Logs;
 
         }
 

@@ -7,22 +7,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Collections;
 
 namespace Homework12_new
 {
-    public class ActionLog
+    public class ActionLog:IEnumerable<string>
     {
         #region Поля и свойства
         /// <summary>
         /// Лист с логами транзакций
         /// </summary>
-        public List<string> Logs { get; private set; }
+        public ObservableCollection<string> Logs { get; private set; }
         #endregion
 
         #region Конструкторы
         public ActionLog()
         {
-            this.Logs = new List<string>();
+            this.Logs = new ObservableCollection<string>();
         }
 
         #endregion
@@ -68,7 +69,7 @@ namespace Homework12_new
                 TypeNameHandling = TypeNameHandling.All
             };
 
-            Logs = JsonConvert.DeserializeObject<List<string>>(json, serializerSettings);
+            Logs = JsonConvert.DeserializeObject<ObservableCollection<string>>(json, serializerSettings);
             return true;
         }
 
@@ -82,6 +83,19 @@ namespace Homework12_new
             string json = JsonConvert.SerializeObject(Logs, Formatting.Indented, serializeSettings);
             File.WriteAllText(LogPath, json);
 
+        }
+
+        public IEnumerator<string> GetEnumerator()
+        {
+            foreach (var e in Logs)
+            {
+                yield return e;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable<string>)Logs).GetEnumerator();
         }
 
         #endregion
