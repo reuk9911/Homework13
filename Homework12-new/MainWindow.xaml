@@ -10,32 +10,37 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*"/>
             <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
             <ColumnDefinition Width="4*"/>
-            
-            
-        </Grid.ColumnDefinitions>
 
-        <ScrollViewer
+
+        </Grid.ColumnDefinitions>
+        <Border
+            Margin="3,3,3,3" 
+            BorderBrush="Black" 
+            BorderThickness="1"
+            Grid.Column = "2">
+            <ScrollViewer
             VerticalScrollBarVisibility="Auto"
+            Margin="8,8,8,8"
             Grid.Column="2">
-            <StackPanel 
+                <StackPanel 
             Orientation="Vertical">
 
-                <!--Добавление клиентов-->
-                <Expander 
+                    <!--Добавление клиентов-->
+                    <Expander 
                 Header="Добавление клиентов" 
                 IsExpanded="False">
-                    <Grid >
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="30"/>
-                            <RowDefinition Height="30"/>
-                            <RowDefinition Height="90"/>
-                            <RowDefinition Height="30"/>
-                        </Grid.RowDefinitions>
-                        <Label Grid.Row="0">Имя клиента</Label>
+                        <Grid >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="90"/>
+                                <RowDefinition Height="30"/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0">Имя клиента</Label>
 
-                        <TextBox 
+                            <TextBox 
                     Grid.Row="1"
                     HorizontalAlignment="Left" 
                     VerticalAlignment="Top"
@@ -45,7 +50,7 @@
                     Width="120"
                     x:Name="TextBoxClientName"/>
 
-                        <GroupBox 
+                            <GroupBox 
                     Header="Тип клиента"
                     Width="150"
                     Height="80"
@@ -53,15 +58,15 @@
                     Margin="3,3,3,3" 
                     HorizontalAlignment="Left" 
                     VerticalAlignment="Top">
-                            <StackPanel 
+                                <StackPanel 
                         HorizontalAlignment="Left" 
                         VerticalAlignment="Top">
-                                <RadioButton x:Name="rbClient" IsChecked="True" Content="Физическое лицо"/>
-                                <RadioButton x:Name="rbVipClient" Content="Vip клиент"/>
-                                <RadioButton x:Name="rbLegalPerson" Content="Юридическое лицо"/>
-                            </StackPanel>
-                        </GroupBox>
-                        <Button
+                                    <RadioButton x:Name="rbClient" IsChecked="True" Content="Физическое лицо"/>
+                                    <RadioButton x:Name="rbVipClient" Content="Vip клиент"/>
+                                    <RadioButton x:Name="rbLegalPerson" Content="Юридическое лицо"/>
+                                </StackPanel>
+                            </GroupBox>
+                            <Button
                     Content="Добавить клиента"
                     Grid.Row="3"
                     Width="110"
@@ -71,115 +76,115 @@
                     VerticalAlignment="Top" 
                     x:Name="ButtonAddClient" 
                     Click="ButtonAddClient_Click"/>
-                    </Grid>
-                </Expander>
+                        </Grid>
+                    </Expander>
 
-                <!--Открыть/закрыть счет-->
-                <Expander
+                    <!--Открыть/закрыть счет-->
+                    <Expander
             Header="Открыть/закрыть счет" IsExpanded="False">
-                    <Grid>
+                        <Grid>
 
-                        <StackPanel Margin="3,3,3,3">
-                            <GroupBox 
+                            <StackPanel Margin="3,3,3,3">
+                                <GroupBox 
                             Header="Тип счета"
                             Margin="3,3,3,3" 
                             HorizontalAlignment="Left" 
                             VerticalAlignment="Top">
-                                <StackPanel HorizontalAlignment="Left">
-                                    <RadioButton x:Name="rbDepositBill" IsChecked="True" Content="Депозитный счет"/>
-                                    <RadioButton x:Name="rbNonDepositBill" Content="Не депозитный счет"/>
-                                </StackPanel>
-                            </GroupBox>
-                            <Button 
+                                    <StackPanel HorizontalAlignment="Left">
+                                        <RadioButton x:Name="rbDepositBill" IsChecked="True" Content="Депозитный счет"/>
+                                        <RadioButton x:Name="rbNonDepositBill" Content="Не депозитный счет"/>
+                                    </StackPanel>
+                                </GroupBox>
+                                <Button 
                             HorizontalAlignment="Left" 
                             Width="120" 
                             Margin="3,3,3,3"
                             x:Name="ButtonOpenBill" 
                             Click="ButtonOpenBill_Click">
-                                Открыть счет
-                            </Button>
-                            <Button 
+                                    Открыть счет
+                                </Button>
+                                <Button 
                             HorizontalAlignment="Left" 
                             Width="120" 
                             Margin="3,3,3,3"
                             VerticalAlignment="Bottom"
                             x:Name="ButtonCloseBill" 
                             Click="ButtonCloseBill_Click" >
-                                Закрыть счет
-                            </Button>
-                        </StackPanel>
-                    </Grid>
-                </Expander>
+                                    Закрыть счет
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </Expander>
 
-                <!--Внести средства-->
-                <Expander
+                    <!--Внести средства-->
+                    <Expander
                 Header="Внести средства" 
                 IsExpanded="False">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="33"/>
-                            <RowDefinition Height="23"/>
-                            <RowDefinition Height="23"/>
-                        </Grid.RowDefinitions>
-                        <Label Grid.Row="0">Сумма</Label>
-                        <TextBox  
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="33"/>
+                                <RowDefinition Height="23"/>
+                                <RowDefinition Height="23"/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0">Сумма</Label>
+                            <TextBox  
                         HorizontalAlignment="Left"
                         Width="120"
                         Grid.Row="1" 
                         Margin="3,3,3,3"
                         x:Name="TextBoxDepositSum">
-                        </TextBox>
-                        <Button
+                            </TextBox>
+                            <Button
                         HorizontalAlignment="Left"
                         Width="120"
                         Margin="3,3,3,3"
                         Grid.Row="2" 
                         x:Name="ButtonDeposit" Click="ButtonDeposit_Click">
-                            Ok
-                        </Button>
-                    </Grid>
-                </Expander>
+                                Ok
+                            </Button>
+                        </Grid>
+                    </Expander>
 
-                <Expander
+                    <Expander
                 Header="Перевести" 
                 IsExpanded="False">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="33"/>
-                            <RowDefinition Height="23"/>
-                            <RowDefinition Height="33"/>
-                            <RowDefinition Height="23"/>
-                            <RowDefinition Height="23"/>
-                        </Grid.RowDefinitions>
-                        <Label Grid.Row="0">Сумма</Label>
-                        <TextBox  
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="33"/>
+                                <RowDefinition Height="23"/>
+                                <RowDefinition Height="33"/>
+                                <RowDefinition Height="23"/>
+                                <RowDefinition Height="23"/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0">Сумма</Label>
+                            <TextBox  
                         HorizontalAlignment="Left"
                         Width="120"
                         Grid.Row="1" 
                         Margin="3,3,3,3"
                         x:Name="TextBoxTransferSum">
-                        </TextBox>
-                        <Label Grid.Row="2">Id счета зачисления</Label>
-                        <TextBox  
+                            </TextBox>
+                            <Label Grid.Row="2">Id счета зачисления</Label>
+                            <TextBox  
                         HorizontalAlignment="Left"
                         Width="120"
                         Grid.Row="3" 
                         Margin="3,3,3,3"
                         x:Name="TextBoxBillToId">
-                        </TextBox>
-                        <Button
+                            </TextBox>
+                            <Button
                         HorizontalAlignment="Left"
                         Width="120"
                         Margin="3,3,3,3"
                         Grid.Row="4" 
                         x:Name="ButtonTransfer" Click="ButtonTransfer_Click">
-                            Ok
-                        </Button>
-                    </Grid>
-                </Expander>
-            </StackPanel>
-        </ScrollViewer>
-
+                                Ok
+                            </Button>
+                        </Grid>
+                    </Expander>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
         <!--ClientsViewGrid-->
         <Border 
             Margin="3,3,3,3" 
@@ -193,7 +198,7 @@
                 AutoGenerateColumns="False" 
                 CanUserAddRows="False" 
                 CanUserDeleteRows="False" 
-                SelectionChanged="ClientsViewGrid_SelectionChanged">
+                SelectionChanged="ClientsViewGrid_SelectionChanged" SelectedIndex="0">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Id" Binding="{Binding Id}" IsReadOnly="True"/>
                     <DataGridTextColumn Header="Имя" Binding="{Binding Name}" IsReadOnly="True"/>
@@ -214,7 +219,7 @@
                 Margin="5,5,5,5" 
                 AutoGenerateColumns="False" 
                 CanUserAddRows="False" 
-                CanUserDeleteRows="False">
+                CanUserDeleteRows="False" SelectedIndex="0">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Id" Binding="{Binding Id}" IsReadOnly="True"/>
                     <DataGridTextColumn Header="Баланс" Binding="{Binding Balance}" IsReadOnly="True"/>
@@ -222,15 +227,22 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Border>
-        <ListBox
+        <Border
+            Margin="3,3,3,3" 
+            BorderBrush="Black" 
+            BorderThickness="1"
+            Grid.Column = "3">
+            <ListBox
             Grid.Column="3"
+                Margin="5,5,5,5"
             x:Name ="LogList">
-            <!--<ListBox.ItemTemplate>
+                <!--<ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding ElementName=Logs}"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>-->
-        </ListBox>
+            </ListBox>
+        </Border>
 
     </Grid>
 </Window>

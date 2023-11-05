@@ -29,6 +29,11 @@ namespace Homework12_new
         #endregion
 
         #region Методы
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Sender"></param>
+        /// <param name="Args"></param>
         public void OnOpenCloseBill(Object Sender, BillOpenCloseEventArgs Args)
         {
             if (Args.Type == OperationTypeEnum.Open)
