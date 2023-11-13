@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Skillbox_Homework12
+namespace Homework14
 {
     public class IdGenerator
     {

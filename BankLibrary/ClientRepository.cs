@@ -5,18 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Collections;
-using Homework12_new;
 using System.Net;
 using Newtonsoft.Json;
 using System.IO;
 
-namespace Skillbox_Homework12
+namespace Homework14
 {
     
     public class ClientRepository<T> : IEnumerable<T> where T : Client, new()
     {
         #region Свойства
-        public ObservableCollection<T>? ClientList { get; private set; }
+        public ObservableCollection<T> ClientList { get; private set; }
 
         public ActionLog Log { get; private set; }
         #endregion
@@ -30,6 +29,8 @@ namespace Skillbox_Homework12
         #endregion
 
         #region Методы
+
+
         /// <summary>
         /// Сериализация Клиентов и Лога
         /// </summary>
@@ -96,9 +97,9 @@ namespace Skillbox_Homework12
         /// </summary>
         /// <param name="id">id счета</param>
         /// <returns>счет</returns>
-        public Bill? FindBillById(int id)
+        public Bill FindBillById(int id)
         {
-            Bill? bill = null;
+            Bill bill = null;
 
             foreach (Client c in ClientList)
             {

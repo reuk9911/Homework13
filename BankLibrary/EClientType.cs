@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Homework12_new
+namespace Homework14
 {
     public enum EClientType
     {// Тип клиента: обычный, Vip или юридическое лицо

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Skillbox_Homework12
+namespace Homework14
 {
     public class Bill : IDisposable, INotifyPropertyChanged
     {
@@ -81,22 +82,21 @@ namespace Skillbox_Homework12
         /// Происходит, когда на счет переводят деньги
         /// </summary>
         public event RefillByTransferDelegate RefillByTransferEvent;
-        
+
         #endregion
 
 
         #region Методы
-        
+
         /// <summary>
         /// пополнение владельцем
         /// </summary>
         /// <param name="sum">Сумма</param>
         public void Deposit(decimal sum)
         {
-            if (sum > 0.0m)
-            {
-                Balance += sum;
-            }
+            if (sum <= 0)
+                throw new NegativeSumException();
+            Balance += sum;
         }
 
         /// <summary>
@@ -105,10 +105,9 @@ namespace Skillbox_Homework12
         /// <param name="sum"></param>
         public void Transfer(decimal sum)
         {
-            if (sum > 0.0m)
-            {
-                Balance -= sum;
-            }
+            if (sum <= 0)
+                throw new NegativeSumException();
+            Balance -= sum;
         }
 
         /// <summary>
@@ -118,16 +117,13 @@ namespace Skillbox_Homework12
         /// <param name="sum">Сумма</param>
         public void RefillByTransfer(Client FromClient, decimal sum)
         {
-            if (sum > 0.0m)
-            {
-                Balance += sum;
-                RefillByTransferEvent?.Invoke(this, 
-                    new RefillByTransferEventArgs(DateTime.Now, FromClient.Name, FromClient.Id, this.Id, sum));
-            }
-            
+            Balance += sum;
+            RefillByTransferEvent?.Invoke(this,
+                new RefillByTransferEventArgs(DateTime.Now, FromClient.Name, FromClient.Id, this.Id, sum));
+
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));

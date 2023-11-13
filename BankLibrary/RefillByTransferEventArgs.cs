@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Skillbox_Homework12
+namespace Homework14
 {
 
 
-    public class BillDepositEventArgs : EventArgs
+    public class RefillByTransferEventArgs : EventArgs
     {
         #region  Свойства
         /// <summary>
-        /// сумма пополнения счета
+        /// сумма перевода
         /// </summary>
         public decimal Sum { get; private set; }
 
@@ -22,23 +22,31 @@ namespace Skillbox_Homework12
         public DateTime Dt { get; private set; }
 
         /// <summary>
-        /// Id счета
+        /// Имя клиента отправителя
         /// </summary>
-        public int BillId { get; private set; }
+        public string SenderName { get; private set; }
+
+        /// <summary>
+        /// Id клиента отправителя
+        /// </summary>
+        public int SenderId { get; private set; }
+
+        public int RecieverBillId { get; private set; }
         #endregion
 
         #region Конструкторы
         /// <summary>
         /// Конструктор
         /// </summary>
-        /// <param name="BillId">Id пополняемого счета</param>
         /// <param name="Dt">Дата и время операции</param>
-        /// <param name="Sum">сумма пополнения счета</param>
-        public BillDepositEventArgs(int BillId, DateTime Dt, decimal Sum)
+        /// <param name="Sum">сумма перевода</param>
+        public RefillByTransferEventArgs(DateTime Dt, string SenderName, int SenderId, int RecieverBillId, decimal Sum)
         {
+            this.SenderName = SenderName;
+            this.SenderId = SenderId;
+            this.RecieverBillId = RecieverBillId;
             this.Sum = Sum;
             this.Dt = Dt;
-            this.BillId = BillId;
         }
         #endregion
 

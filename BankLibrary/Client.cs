@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
-using System.Windows.Documents;
-using System.Windows.Media.TextFormatting;
+//using System.Windows.Documents;
+//using System.Windows.Media.TextFormatting;
 
-namespace Skillbox_Homework12
+namespace Homework14
 {
-    
-    
-    public class Client : IDisposable, IDeposit<Bill>, ITransfer<Bill>
+
+
+    public class Client : IDisposable, /*IDeposit<Bill>,*/ ITransfer<Bill>
     {
         #region Поля и Свойства
         /// <summary>
@@ -73,21 +73,21 @@ namespace Skillbox_Homework12
         #region События
 
         public delegate void OpenCloseDelegate(object Sender, BillOpenCloseEventArgs Args);
-        
+
         /// <summary>
         /// Происходит, когда клиент открывает и закрывает счет
         /// </summary>
         public event OpenCloseDelegate OpenCloseBillEvent;
 
         public delegate void BillDepositDelegate(object Sender, BillDepositEventArgs Args);
-        
+
         /// <summary>
         /// Происходит при пополнении счета клиентом
         /// </summary>
         public event BillDepositDelegate BillDepositEvent;
 
         public delegate void RefillByTransferDelegate(object Sender, RefillByTransferEventArgs Args);
-        
+
         /// <summary>
         /// Происходит, когда на счет переводят деньги
         /// </summary>
@@ -117,8 +117,8 @@ namespace Skillbox_Homework12
                 Bills.Add(new NonDepositBill() as Bill);
             else return;
 
-            OpenCloseBillEvent?.Invoke(this, 
-                new BillOpenCloseEventArgs(OperationTypeEnum.Open, DateTime.Now, Bills[Bills.Count-1].Id));
+            OpenCloseBillEvent?.Invoke(this,
+                new BillOpenCloseEventArgs(OperationTypeEnum.Open, DateTime.Now, Bills[Bills.Count - 1].Id));
             Bills[Bills.Count - 1].RefillByTransferEvent += OnRefillBillByTransfer;
         }
 
@@ -160,9 +160,9 @@ namespace Skillbox_Homework12
         /// <param name="BillId">Id счета</param>
         /// <param name="Sum">Сумма</param>
         /// <returns>Возвращает счет, на который вносятся деньги</returns>
-        public Bill? Deposit(int BillId, decimal Sum)
+        public /*Bill*/ bool Deposit(int BillId, decimal Sum)
         {
-            if (Bills == null) return null;
+            if (Bills == null) return false;
             int k = -1;
             for (int i = 0; i < Bills.Count; i++)
             {
@@ -172,14 +172,23 @@ namespace Skillbox_Homework12
                     break;
                 }
             }
-            if (k == -1) return null;
+            if (k == -1) return /*null*/false;
             else
             {
-                Bills[k].Deposit(Sum);
+                try
+                {
+                    Bills[k].Deposit(Sum);
+                }
+                catch (NegativeSumException e)
+                {
+                    this.Message = e.Message;
+                    return /*null*/false;
+                }
                 BillDepositEvent?.Invoke(this, new BillDepositEventArgs(Bills[k].Id, DateTime.Now, Sum));
-                //BillAction?.Invoke(this, DateTime.Now, $"Пополнение счета Id = {Bills[Bills.Count - 1].Id} на {Sum}");
-                if (Bills[k] is DepositBill) return (DepositBill)Bills[k];
-                return Bills[k];
+                //if (Bills[k] is DepositBill) return (DepositBill)Bills[k];
+                //if (Bills[k] is NonDepositBill) return (NonDepositBill)Bills[k];
+                //return Bills[k];
+                return true;
             }
 
         }
@@ -198,7 +207,15 @@ namespace Skillbox_Homework12
                 this.Message = "Перевод не прошел! Не достаточно средств!";
                 return false;
             }
-            BillFrom.Transfer(sum);
+            try
+            {
+                BillFrom.Transfer(sum);
+            }
+            catch (NegativeSumException e)
+            {
+                this.Message = e.Message;
+                return false;
+            }
             TransferEvent?.Invoke(this, new TransferEventArgs(DateTime.Now, Id, Name, BillFrom.Id, BillTo.Id, sum));
 
             BillTo.RefillByTransfer(this, sum);

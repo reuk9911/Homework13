@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Skillbox_Homework12
+namespace Homework14
 {
     public interface IDeposit<out T> where T : Bill
     {
@@ -14,6 +14,6 @@ namespace Skillbox_Homework12
         /// <param name="BillId"> Id счета</param>
         /// <param name="Sum">сумма</param>
         /// <returns>Счет, на который вносятся деньги</returns>
-        T? Deposit(int BillId, decimal Sum);
+        T Deposit(int BillId, decimal Sum);
     }
 }

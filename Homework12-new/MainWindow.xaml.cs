@@ -1,5 +1,4 @@
-﻿using Skillbox_Homework12;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -14,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Homework14;
 
 namespace Homework12_new
 {
@@ -22,6 +22,12 @@ namespace Homework12_new
     /// </summary>
     public partial class MainWindow : Window
     {
+        //public void OnMessage(object Sender, string Message)
+        //{
+        //    MessageBox.Show(Message, "Warning",
+        //            MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.Yes);
+        //}
+
         public ClientRepository<Client> Clients;
         public MainWindow()
         {
@@ -136,9 +142,19 @@ namespace Homework12_new
                     MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.Yes);
                 return;
             }
+
+
+
             Bill bill = (Bill)BillsViewGrid.SelectedItem;
             Client client = (Client)ClientsViewGrid.SelectedItem;
-            client.Deposit(bill.Id, sum);
+            bool b = client.Deposit(bill.Id, sum);
+            if (b == false) 
+            {
+                MessageBox.Show(client.Message, "Warning",
+                                    MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.Yes);
+                return;
+            }
+
         }
 
         private void ButtonTransfer_Click(object sender, RoutedEventArgs e)

@@ -4,33 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Skillbox_Homework12
+namespace Homework14
 {
-    public class DepositBill : Bill/*, IDeposit<DepositBill>*/
+    public class LegalPerson : Client
     {
-
         #region Поля и свойства
+        
         /// <summary>
-        /// Тип счета
+        /// Тип клиента
         /// </summary>
-        public override string BillType { get; }
+        public override string ClientType { get; }
+
         #endregion
 
         #region Конструкторы
+
         /// <summary>
         /// Конструктор без параметров
         /// </summary>
-        public DepositBill() : base()
+        public LegalPerson() : base()
         {
-            this.BillType = "Депозитный счет";
+            this.ClientType = "Юридическое лицо";
         }
         #endregion
-
-
-        //public DepositBill? Deposit(int BillId, decimal Sum)
-        //{
-        //    this.Balance += Sum;
-        //    return this;
-        //}
     }
 }
